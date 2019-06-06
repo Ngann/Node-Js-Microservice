@@ -8,6 +8,39 @@ const http = require('http');
 
 // initiate the server by adding the service object, create a const call server and create a server and pass in the service
 const server = http.createServer(service);
+
+const { RTMClient } = require('@slack/rtm-api');
+
+// An access token (from your Slack app or custom integration - usually xoxb)
+const token = '';
+
+// The client is initialized and then started to get an active connection to the platform
+const rtm = new RTMClient(token);
+rtm.start()
+  .catch(console.error);
+
+// Calling `rtm.on(eventName, eventHandler)` allows you to handle events (see: https://api.slack.com/events)
+// When the connection is active, the 'ready' event will be triggered
+rtm.on('ready', async () => {
+
+  // Sending a message requires a channel ID, a DM ID, an MPDM ID, or a group ID
+  // The following value is used as an example
+  const conversationId = 'CHLQ1HU91';
+
+  // The RTM client can send simple string messages
+  const res = await rtm.sendMessage('Hello there', conversationId);
+
+  // `res` contains information about the sent message
+  console.log('Message sent: ', res.ts);
+});
+
+// After the connection is open, your app will start receiving other events.
+rtm.on('user_typing', (event) => {
+  // The argument is the event as shown in the reference docs.
+  // For example, https://api.slack.com/events/user_typing
+  console.log(event);
+})
+
 // server to start on port 3000 
 server.listen(3000);
 
