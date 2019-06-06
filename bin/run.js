@@ -1,5 +1,6 @@
 'use strict';
 
+// const slackClient = require('../server/slackClient');
 //import the service from service.js
 const service = require('../server/service');
 
@@ -11,11 +12,29 @@ const server = http.createServer(service);
 
 const { RTMClient } = require('@slack/rtm-api');
 
+
 // An access token (from your Slack app or custom integration - usually xoxb)
-const token = '';
+
+const token = process.env.SLACK_TOKEN;
+
+// const { WebClient } = require('@slack/web-api');
+
+// const web = new WebClient(token, {logLevel:'verbose'});
+
+// // This argument can be a channel ID, a DM ID, a MPDM ID, or a group ID
+// const conversationId = 'CHLQ1HU91';
+
+// (async () => {
+//   // See: https://api.slack.com/methods/chat.postMessage
+//   const res = await web.chat.postMessage({ channel: conversationId, text: 'Hello there' });
+
+//   // `res` contains information about the posted message
+//   console.log('Message sent: ', res.ts);
+// })();
+
 
 // The client is initialized and then started to get an active connection to the platform
-const rtm = new RTMClient(token);
+const rtm = new RTMClient(token, {logLevel: 'verbose'});
 rtm.start()
   .catch(console.error);
 
@@ -28,7 +47,7 @@ rtm.on('ready', async () => {
   const conversationId = 'CHLQ1HU91';
 
   // The RTM client can send simple string messages
-  const res = await rtm.sendMessage('Hello there', conversationId);
+  const res = await rtm.sendMessage('Hello there team', conversationId);
 
   // `res` contains information about the sent message
   console.log('Message sent: ', res.ts);
@@ -41,6 +60,7 @@ rtm.on('user_typing', (event) => {
   console.log(event);
 })
 
+  
 // server to start on port 3000 
 server.listen(3000);
 
