@@ -4,12 +4,37 @@ const { RTMClient } = require('@slack/rtm-api');
 let rtm = null;
 let nlp = null;
 
-function handleOnMessage(wit) {
+function addAuthentication() {
+    rtm.on('authenticated', (event) => {
+    // The argument is the event as shown in the reference docs.
+    // For example, https://api.slack.com/events/user_typing
+    console.log(event);
+    console.log(`Logged in as ${event.self.name} on team ${event.team.name}, but not yet connected to a channel`)
+    })
+}
+
+
+function handleOnMessage(aiClient) {
     rtm.on('message', (event) => {
-        wit.ask(event.text);
-        // The argument is the event as shown in the reference docs.
-        // For example, https://api.slack.com/events/user_typing
-        rtm.sendMessage('this is a test message', 'CHLQ1HU91', function messageSent(){
+        aiClient.ask(event.text, (err, res) => {
+            if(err) {
+                console.log(err);
+                return;
+            }
+
+            if(!res.intent) {
+                return rtm.sendMessage('Sorry, I did not understand', 'CHLQ1HU91', function messageSent(){
+                });
+            } else if( res.intent[0].value =='time' && res.location){
+                return rtm.sendMessage(`I did yet know the time in ${res.location}`, 'CHLQ1HU91', function messageSent(){
+                });
+            } else {
+                console.log(res)
+            // The argument is the event as shown in the reference docs.
+            // For example, https://api.slack.com/events/user_typing
+            rtm.sendMessage('Sorry, I did not understand', 'CHLQ1HU91', function messageSent(){
+            });
+            }
         });
     })
 }
@@ -18,13 +43,6 @@ module.exports.init = function slackClient(token,logLevel, nlpClient){
     // The client is initialized and then started to get an active connection to the platform
     rtm = new RTMClient(token,{logLevel: logLevel});
     nlp = nlpClient;
-        
-    rtm.on('authenticated', (event) => {
-    // The argument is the event as shown in the reference docs.
-    // For example, https://api.slack.com/events/user_typing
-    console.log(event);
-    console.log(`Logged in as ${event.self.name} on team ${event.team.name}, but not yet connected to a channel`)
-    })
 
     // // Calling `rtm.on(eventName, eventHandler)` allows you to handle events (see: https://api.slack.com/events)
     // When the connection is active, the 'ready' event will be triggered
@@ -48,16 +66,7 @@ module.exports.init = function slackClient(token,logLevel, nlpClient){
     console.log(event);
     })
 
-    // rtm.on('message', (event) => {
-    //     nlp.ask(event.text);
-    //     // The argument is the event as shown in the reference docs.
-    //     // For example, https://api.slack.com/events/user_typing
-    //     rtm.sendMessage('this is a test message', 'CHLQ1HU91', function messageSent(){
-    //     });
-    //     console.log(event);
-    // })
-
+    addAuthentication();
     handleOnMessage(nlp);
-    // console.log(handleOnMessage(nlp))
     return rtm;
 }
