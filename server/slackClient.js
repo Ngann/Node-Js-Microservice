@@ -4,7 +4,15 @@ const { RTMClient } = require('@slack/rtm-api');
 let rtm = null;
 let nlp = null;
 
-
+function handleOnMessage(wit) {
+    rtm.on('message', (event) => {
+        wit.ask(event.text);
+        // The argument is the event as shown in the reference docs.
+        // For example, https://api.slack.com/events/user_typing
+        rtm.sendMessage('this is a test message', 'CHLQ1HU91', function messageSent(){
+        });
+    })
+}
 
 module.exports.init = function slackClient(token,logLevel, nlpClient){
     // The client is initialized and then started to get an active connection to the platform
@@ -40,13 +48,16 @@ module.exports.init = function slackClient(token,logLevel, nlpClient){
     console.log(event);
     })
 
-    rtm.on('message', (event) => {
-        nlp.ask(event.text);
-        // The argument is the event as shown in the reference docs.
-        // For example, https://api.slack.com/events/user_typing
-        rtm.sendMessage('this is a test message', 'CHLQ1HU91', function messageSent(){
-        });
-        console.log(event);
-    })
+    // rtm.on('message', (event) => {
+    //     nlp.ask(event.text);
+    //     // The argument is the event as shown in the reference docs.
+    //     // For example, https://api.slack.com/events/user_typing
+    //     rtm.sendMessage('this is a test message', 'CHLQ1HU91', function messageSent(){
+    //     });
+    //     console.log(event);
+    // })
+
+    handleOnMessage(nlp);
+    // console.log(handleOnMessage(nlp))
     return rtm;
 }
