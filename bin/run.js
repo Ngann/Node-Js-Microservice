@@ -9,11 +9,20 @@ const http = require('http');
 
 // initiate the server by adding the service object, create a const call server and create a server and pass in the service
 const server = http.createServer(service);
+// const slackClient = require('../server/slackClient');
 
+// const slackToken =process.env.SLACK_TOKEN;
+// const slackLogLevel = 'verbose';
+
+// const rtm = slackClient.init(slackToken, slackLogLevel);
+// rtm.start();
+
+// slackClient.addAuthenticatedHandler(rtm,() => server.listen(3000))
 const { RTMClient, CLIENT_EVENTS } = require('@slack/rtm-api');
 
 
 // An access token (from your Slack app or custom integration - usually xoxb)
+
 
 // const token = process.env.SLACK_TOKEN;
 
@@ -42,8 +51,8 @@ rtm.on('authenticated', (event) => {
 // The argument is the event as shown in the reference docs.
 // For example, https://api.slack.com/events/user_typing
 console.log(event);
+console.log(`Logged in as ${event.self.name} on team ${event.team.name}, but not yet connected to a channel`)
 })
-  
 
 // // Calling `rtm.on(eventName, eventHandler)` allows you to handle events (see: https://api.slack.com/events)
 // When the connection is active, the 'ready' event will be triggered
@@ -54,7 +63,7 @@ rtm.on('ready', async () => {
   const conversationId = 'CHLQ1HU91';
 
   // The RTM client can send simple string messages
-  const res = await rtm.sendMessage('Hello there team', conversationId);
+  const res = await rtm.sendMessage('New message', conversationId);
 
   // `res` contains information about the sent message
   console.log('Message sent: ', res.ts);
@@ -67,6 +76,13 @@ rtm.on('user_typing', (event) => {
   console.log(event);
 })
 
+rtm.on('message', (event) => {
+    // The argument is the event as shown in the reference docs.
+    // For example, https://api.slack.com/events/user_typing
+    rtm.sendMessage('this is a test message', 'CHLQ1HU91', function messageSent(){
+    });
+    console.log(event);
+  })
 
 // server to start on port 3000 
 server.listen(3000);

@@ -15,3 +15,4 @@ $ node bin/run.js
 Slack:
 Administration > Workspace Setting > Build Bot > Create Slack App > Click Bot User > Add Bot User
 Basic Information > install App to workspace > You should now see Iris in workspace
+Bot Token > OAuth & Permissions
