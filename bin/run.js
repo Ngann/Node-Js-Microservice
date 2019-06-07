@@ -10,12 +10,12 @@ const http = require('http');
 // initiate the server by adding the service object, create a const call server and create a server and pass in the service
 const server = http.createServer(service);
 
-const { RTMClient } = require('@slack/rtm-api');
+const { RTMClient, CLIENT_EVENTS } = require('@slack/rtm-api');
 
 
 // An access token (from your Slack app or custom integration - usually xoxb)
 
-const token = process.env.SLACK_TOKEN;
+// const token = process.env.SLACK_TOKEN;
 
 // const { WebClient } = require('@slack/web-api');
 
@@ -26,19 +26,26 @@ const token = process.env.SLACK_TOKEN;
 
 // (async () => {
 //   // See: https://api.slack.com/methods/chat.postMessage
-//   const res = await web.chat.postMessage({ channel: conversationId, text: 'Hello there' });
+//   const res = await web.chat.postMessage({ channel: conversationId, text: 'Hello there Ngan' });
 
 //   // `res` contains information about the posted message
 //   console.log('Message sent: ', res.ts);
 // })();
 
 
-// The client is initialized and then started to get an active connection to the platform
+// // The client is initialized and then started to get an active connection to the platform
 const rtm = new RTMClient(token, {logLevel: 'verbose'});
 rtm.start()
   .catch(console.error);
 
-// Calling `rtm.on(eventName, eventHandler)` allows you to handle events (see: https://api.slack.com/events)
+rtm.on('authenticated', (event) => {
+// The argument is the event as shown in the reference docs.
+// For example, https://api.slack.com/events/user_typing
+console.log(event);
+})
+  
+
+// // Calling `rtm.on(eventName, eventHandler)` allows you to handle events (see: https://api.slack.com/events)
 // When the connection is active, the 'ready' event will be triggered
 rtm.on('ready', async () => {
 
@@ -60,7 +67,7 @@ rtm.on('user_typing', (event) => {
   console.log(event);
 })
 
-  
+
 // server to start on port 3000 
 server.listen(3000);
 
