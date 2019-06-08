@@ -13,29 +13,51 @@ function addAuthentication() {
     })
 }
 
+let conversationId = 'CHLQ1HU91'
 
 function handleOnMessage(aiClient) {
     rtm.on('message', (event) => {
+        if (event.text.toLowerCase().includes('iris')) {
+
         aiClient.ask(event.text, (err, res) => {
             if(err) {
                 console.log(err);
                 return;
             }
 
-            if(!res.intent) {
-                return rtm.sendMessage('Sorry, I did not understand', 'CHLQ1HU91', function messageSent(){
-                });
-            } else if( res.intent[0].value =='time' && res.location){
-                return rtm.sendMessage(`I did yet know the time in ${res.location}`, 'CHLQ1HU91', function messageSent(){
-                });
+            
+            try {
+                if(!res.intent || !res.intent[0] || res.intent[0].value) {
+                    throw new Error("Could not extract intent.")
+                }
+
+                const intent = require('./intents/' + res.intent[0].value + 'Intent');
+
+                intent.process(res, function(error, response) {
+                    if(error) {
+                        console.log(error.message);
+                        return;
+                    }
+                    
+                    return rtm.sendMessage(response, conversationId);
+                })
+
+            } catch(err) {
+                console.log(err);
+                console.log(res);
+                rtm.sendMessage("Sorry, I don't know what you are talking about!", conversationId);
+            }
+
+            if (!res.intent) {
+                return rtm.sendMessage("Sorry, I don't know what you are talking about.", conversationId);
+            } else if (res.intent[0].value == 'time' && res.location) {
+                return rtm.sendMessage(`I don't yet know the time in ${res.location[0].value}`, conversationId);
             } else {
-                console.log(res)
-            // The argument is the event as shown in the reference docs.
-            // For example, https://api.slack.com/events/user_typing
-            rtm.sendMessage('Sorry, I did not understand', 'CHLQ1HU91', function messageSent(){
-            });
+                console.log(res);
+                return rtm.sendMessage("Sorry, I don't know what you are talking about.", conversationId);
             }
         });
+        }
     })
 }
 
@@ -50,7 +72,7 @@ module.exports.init = function slackClient(token,logLevel, nlpClient){
 
     // Sending a message requires a channel ID, a DM ID, an MPDM ID, or a group ID
     // The following value is used as an example
-    const conversationId = 'CHLQ1HU91';
+    
 
     // The RTM client can send simple string messages
     const res = await rtm.sendMessage('New message', conversationId);

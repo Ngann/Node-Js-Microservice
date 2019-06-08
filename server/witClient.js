@@ -19,8 +19,8 @@ module.exports = function witClient(token){
                 const witResponse = handleWitResponse(res.body);
                 return callback(null, witResponse);
             })
-        // console.log('ask: ' + message);
-        // console.log('token: ' + token);
+        console.log('ask: ' + message);
+        console.log('token: ' + token);
     }
     return {
         ask: ask
