@@ -1,6 +1,5 @@
 'use strict';
 
-// const slackClient = require('../server/slackClient');
 //import the service from service.js
 const service = require('../server/service');
 
@@ -9,80 +8,19 @@ const http = require('http');
 
 // initiate the server by adding the service object, create a const call server and create a server and pass in the service
 const server = http.createServer(service);
-// const slackClient = require('../server/slackClient');
-
-// const slackToken =process.env.SLACK_TOKEN;
-// const slackLogLevel = 'verbose';
-
-// const rtm = slackClient.init(slackToken, slackLogLevel);
-// rtm.start();
+const slackClient = require('../server/slackClient');
 
 // slackClient.addAuthenticatedHandler(rtm,() => server.listen(3000))
-const { RTMClient, CLIENT_EVENTS } = require('@slack/rtm-api');
-
-
 // An access token (from your Slack app or custom integration - usually xoxb)
-
-
 // const token = process.env.SLACK_TOKEN;
+const slackToken =process.env.SLACK_TOKEN;
+const slackLogLevel = 'verbose';
 
-// const { WebClient } = require('@slack/web-api');
+const witToken =process.env.SLACK_TOKEN;
+const witClient = require('../server/witClient')(witToken);
 
-// const web = new WebClient(token, {logLevel:'verbose'});
-
-// // This argument can be a channel ID, a DM ID, a MPDM ID, or a group ID
-// const conversationId = 'CHLQ1HU91';
-
-// (async () => {
-//   // See: https://api.slack.com/methods/chat.postMessage
-//   const res = await web.chat.postMessage({ channel: conversationId, text: 'Hello there Ngan' });
-
-//   // `res` contains information about the posted message
-//   console.log('Message sent: ', res.ts);
-// })();
-
-
-// // The client is initialized and then started to get an active connection to the platform
-const rtm = new RTMClient(token, {logLevel: 'verbose'});
-rtm.start()
-  .catch(console.error);
-
-rtm.on('authenticated', (event) => {
-// The argument is the event as shown in the reference docs.
-// For example, https://api.slack.com/events/user_typing
-console.log(event);
-console.log(`Logged in as ${event.self.name} on team ${event.team.name}, but not yet connected to a channel`)
-})
-
-// // Calling `rtm.on(eventName, eventHandler)` allows you to handle events (see: https://api.slack.com/events)
-// When the connection is active, the 'ready' event will be triggered
-rtm.on('ready', async () => {
-
-  // Sending a message requires a channel ID, a DM ID, an MPDM ID, or a group ID
-  // The following value is used as an example
-  const conversationId = 'CHLQ1HU91';
-
-  // The RTM client can send simple string messages
-  const res = await rtm.sendMessage('New message', conversationId);
-
-  // `res` contains information about the sent message
-  console.log('Message sent: ', res.ts);
-});
-
-// After the connection is open, your app will start receiving other events.
-rtm.on('user_typing', (event) => {
-  // The argument is the event as shown in the reference docs.
-  // For example, https://api.slack.com/events/user_typing
-  console.log(event);
-})
-
-rtm.on('message', (event) => {
-    // The argument is the event as shown in the reference docs.
-    // For example, https://api.slack.com/events/user_typing
-    rtm.sendMessage('this is a test message', 'CHLQ1HU91', function messageSent(){
-    });
-    console.log(event);
-  })
+const rtm = slackClient.init(slackToken, slackLogLevel, witClient);
+rtm.start();
 
 // server to start on port 3000 
 server.listen(3000);
