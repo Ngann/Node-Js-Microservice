@@ -13,10 +13,10 @@ const slackClient = require('../server/slackClient');
 // slackClient.addAuthenticatedHandler(rtm,() => server.listen(3000))
 // An access token (from your Slack app or custom integration - usually xoxb)
 // const token = process.env.SLACK_TOKEN;
-const slackToken =process.env.SLACK_TOKEN;
+const slackToken ='xoxb-609731003684-645236093250-l82ByGnNRNFxBCTwg0RAmAyA';
 const slackLogLevel = 'verbose';
 
-const witToken =process.env.SLACK_TOKEN;
+const witToken = 'KPMFSP47OMKLHSFAQWZXUJI3VTSHSIHV';
 const witClient = require('../server/witClient')(witToken);
 
 const rtm = slackClient.init(slackToken, slackLogLevel, witClient);

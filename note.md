@@ -20,3 +20,5 @@ OAuth & Permissions > Bot Token >
 
 Wit.ai
 $ npm install --save superagent  // to connect to wit client
+
+To make microservice resilent, we make a service registry.
