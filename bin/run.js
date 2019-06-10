@@ -12,7 +12,7 @@ const slackClient = require('../server/slackClient');
 // slackClient.addAuthenticatedHandler(rtm,() => server.listen(3000))
 // An access token (from your Slack app or custom integration - usually xoxb)
 // const token = process.env.SLACK_TOKEN;
-const slackToken = 'SLACK_API_KEY';
+const slackToken = process.env.SLACK_TOKEN;
 const slackLogLevel = 'verbose';
 
 
@@ -20,7 +20,7 @@ const slackLogLevel = 'verbose';
 const serviceRegistry = service.get('serviceRegistry');
 
 //AI token
-const witToken = 'WIT_API_KEY';
+const witToken = process.env.SLACK_TOKEN;;
 const witClient = require('../server/witClient')(witToken);
 
 const rtm = slackClient.init(slackToken, slackLogLevel, witClient, serviceRegistry);
