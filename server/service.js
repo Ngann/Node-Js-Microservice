@@ -7,6 +7,9 @@ const service = express();
 const ServiceRegistry = require('./serviceRegistry');
 const serviceRegistry = new ServiceRegistry();
 
+//express provides a way to store data for reuse
+//store service registry object
+service.set('serviceRegistry', serviceRegistry)
 // make microservice resilience -- add flexibity and ability to recover service registry
 // the service need to know the endpoint of the main application 
 // below is the service registry
@@ -17,11 +20,11 @@ service.put('/service/:intent/:port', (req, res, next) =>{
     const servicePort = req.params.port;
 
     // check if it is an IPv6 address check if it inclues ('::') if it does we use a ternary syntax ? ``, if it is a IPv6 we need to put it in curly brakctes
-    const serviceIP = req.connection.remoteAddress.includes('::')
+    const serviceIp = req.connection.remoteAddress.includes('::')
     ?`[${req.connection.remoteAddress}]` : req.connection.remoteAddress;
 
-    serviceRegistry.add(serviceIntent, serviceIP, servicePort);
-    res.json({result: `${serviceIntent} at ${serviceIP}:${servicePort}`})
+    serviceRegistry.add(serviceIntent, serviceIp, servicePort);
+    res.json({result: `${serviceIntent} at ${serviceIp}:${servicePort}`})
 
 });
 

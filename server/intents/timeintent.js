@@ -9,7 +9,7 @@ const request = require('superagent');
 //    return callback(false, `i don't yet know in ${intentData.location[0].value}`);
 // }
 
-module.exports.process = function process(intentData, callback) {
+module.exports.process = function process(intentData, registry, callback) {
 
     if(intentData.intent[0].value !== 'time')
         return callback(new Error(`Expected time intent, got ${intentData.intent[0].value}`));
@@ -18,10 +18,14 @@ module.exports.process = function process(intentData, callback) {
     
     const location = intentData.location[0].value.replace(/,.?iris/i, '');
 
-    request.get(`http://localhost:3010/service/${location}`, (err, res) => {
+    const service = registry.get('time');
+    if(!service) return callback(false, 'No service available');
+
+
+    request.get(`http://${service.ip}:${service.port}/service/${location}`, (err, res) => {
         if(err || res.statusCode != 200 || !res.body.result) {
             console.log(err);
-            console.log(res.body);
+            // console.log(res.body);
 
             return callback(false, `I had a problem finding out the time in ${location}`);
         }

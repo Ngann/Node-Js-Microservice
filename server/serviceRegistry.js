@@ -35,13 +35,10 @@ class ServiceRegistry {
             this._cleanup();
             return;
         }
-        // 
-        this._services[key].timestamp = Math.floor(new Date() / 1000);
-        console.log(`Updated services for intent ${intent} on ${ip}:${port}`);
 
-        // this._services[key].timestamp = Math.floor(new Date() / 1000);
-        // console.log(`Updated service for intent ${intent} on ${ip}:${port}`);
-        // this._cleanup();
+        this._services[key].timestamp = Math.floor(new Date() / 1000);
+        console.log(`Updated service for intent ${intent} on ${ip}:${port}`);
+        this._cleanup();
     }
 
     //gets intent, ip, port and delete the element from the array
