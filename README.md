@@ -5,14 +5,14 @@
 
 _This slackbot allows user to access the time and weather base on a location ._
 
+# ![tree](./src/assets/images/example.png)
+
 ## Table of Content
 
 - [Features](#Features)
 - [Technology](#technology)
-- [Instruction](#instruction)
+- [Installation](#installation)
 - [License](#license)
-
-# ![tree](./src/assets/images/example.png)
 
 ## Features
 * AI is created using Wit AI with intent set for time and weather
@@ -26,8 +26,32 @@ _This slackbot allows user to access the time and weather base on a location ._
 * Slack
 * Wit AI
 
-## Instruction
-* Soon
+## Installation
+
+1. Go to terminal and clone this repository:
+```
+$ git clone git repository link
+```
+2. Change into the project directory and install npm
+```
+$ npm install
+```
+3. 
+```
+$ 
+```
+4.  
+```
+$ 
+```
+```
+$ 
+```
+5.  
+```
+$ 
+```
+
 
 ## License
 * This project is licensed under the MIT License - see the LICENSE.md file for details
