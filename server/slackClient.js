@@ -21,7 +21,7 @@ function addAuthentication() {
 
 function handleOnMessage(aiClient) {
   rtm.on("message", event => {
-    if (event.text.toLowerCase().includes("iris")) {
+    if (event.text.toLowerCase().includes("ninja")) {
       //   console.log("iris:", event.text);
 
       aiClient.ask(event.text, (err, res) => {
