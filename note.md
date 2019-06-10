@@ -22,3 +22,11 @@ Wit.ai
 $ npm install --save superagent  // to connect to wit client
 
 To make microservice resilent, we make a service registry.
+
+Error: below is resolved by reinstalling slack app and generating new bot token.
+
+IRIS is listning on 3000 in development.mode
+(node:20037) UnhandledPromiseRejectionWarning: Error: An API error occurred: invalid_auth
+    at Object.platformErrorFromResult (/Users/cereal/Desktop/iris/node_modules/@slack/web-api/dist/errors.js:50:33)
+    at WebClient.apiCall (/Users/cereal/Desktop/iris/node_modules/@slack/web-api/dist/WebClient.js:374:28)
+    at processTicksAndRejections (internal/process/next_tick.js:81:5)
