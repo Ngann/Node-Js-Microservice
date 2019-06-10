@@ -4,6 +4,8 @@
 // setting up the express server
 const express = require('express');
 const service = express();
+const ServiceRegistry = require('./serviceRegistry');
+const serviceRegistry = new ServiceRegistry();
 
 // make microservice resilience -- add flexibity and ability to recover service registry
 // the service need to know the endpoint of the main application 
@@ -18,6 +20,7 @@ service.put('/service/:intent/:port', (req, res, next) =>{
     const serviceIP = req.connection.remoteAddress.includes('::')
     ?`[${req.connection.remoteAddress}]` : req.connection.remoteAddress;
 
+    serviceRegistry.add(serviceIntent, serviceIP, servicePort);
     res.json({result: `${serviceIntent} at ${serviceIP}:${servicePort}`})
 
 });
