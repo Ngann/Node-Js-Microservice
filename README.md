@@ -28,30 +28,59 @@ _This slackbot allows user to access the time and weather base on a location ._
 
 ## Installation
 
-1. Go to terminal and clone this repository:
+1. Credentials needed: Slack Bot User Token, Google API Key and Wit.AI API Key.
+2. Clone Respository
 ```
 $ git clone git repository link
 ```
-2. Change into the project directory and install npm
+3.Change into the project directory and install npm
 ```
 $ npm install
 ```
-3. 
+4. Add Slack Token and Wit token in run.js
 ```
-$ 
+$ node bin/run.js
 ```
-4.  
+5. Add Google API Key for Time and Location for microservices in service.js
 ```
-$ 
+$ node bin/run.js
 ```
+In the terminal for the main service you should see the below reponse if services are working correctly.
+Main Service:
 ```
-$ 
+$ $ node bin/run.js
+IRIS is listening on 3000 in development.mode
+{ ok: true,
+  url:
+   'wss://cerberus-xxxx.lb.slack-msgs.com/websocket/wPnaWoy9icXx1Yv2dTGxH30lyNKRHikSfNcrVGtAhwjYzxsg-goNPB8CkQjjueaNlFsUpo_i-9BtfEzwdttiwGBzigtI28s0cnIggu4VKog=',
+  team:
+   { id: 'THXMH03L4', name: 'Acme Dev', domain: 'acmedevglobal' },
+  self: { id: 'UJZ6Y2R7C', name: 'iris' },
+  response_metadata:
+   { scopes: [ 'identify', 'bot:basic' ],
+     acceptedScopes: [ 'rtm:stream', 'client' ] } }
+Logged in as iris on team Acme Dev, but not yet connected to a channel
+Message sent:  1561502105.000300
+From Service Registry, added service for intent weather on [::ffff:127.0.0.1]:59421
+From Service Registry, added service for intent time on [::ffff:127.0.0.1]:59423
+Updated service for intent weather on [::ffff:127.0.0.1]:59421
+Updated service for intent time on [::ffff:127.0.0.1]:59423
+From Service Registry, added service for intent weather on [::ffff:127.0.0.1]:59471
+Updated service for intent time on [::ffff:127.0.0.1]:59423
 ```
-5.  
+Weather Intent:
 ```
-$ 
+IRIS-Weather is listening on 59471 in development mode.
+{ result: 'weather at [::ffff:127.0.0.1]:59471' }
 ```
 
+Time Intent:
+```
+IRIS-Time is listening on 59423 in development mode.
+{ result: 'time at [::ffff:127.0.0.1]:59423' }
+{ result: 'time at [::ffff:127.0.0.1]:59423' }
+{ result: 'time at [::ffff:127.0.0.1]:59423' }
+```
 
 ## License
 * This project is licensed under the MIT License - see the LICENSE.md file for details
