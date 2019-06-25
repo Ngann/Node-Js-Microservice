@@ -52,10 +52,10 @@ $ $ node bin/run.js
 IRIS is listening on 3000 in development.mode
 { ok: true,
   url:
-   'wss://cerberus-xxxx.lb.slack-msgs.com/websocket/wPnaWoy9icXx1Yv2dTGxH30lyNKRHikSfNcrVGtAhwjYzxsg-goNPB8CkQjjueaNlFsUpo_i-9BtfEzwdttiwGBzigtI28s0cnIggu4VKog=',
+   'wss://cerberus-xxxx.lb.slack-msgs.com/websocket/wPnaWoy9i=g=',
   team:
-   { id: 'THXMH03L4', name: 'Acme Dev', domain: 'acmedevglobal' },
-  self: { id: 'UJZ6Y2R7C', name: 'iris' },
+   { id: 'Tasaf4', name: 'Acme Dev', domain: 'acmedevglobal' },
+  self: { id: 'UJsadadfC', name: 'iris' },
   response_metadata:
    { scopes: [ 'identify', 'bot:basic' ],
      acceptedScopes: [ 'rtm:stream', 'client' ] } }
